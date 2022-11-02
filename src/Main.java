@@ -1,5 +1,6 @@
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 
 public class Main {
@@ -13,9 +14,14 @@ public class Main {
         treeSet.add(new Person("Николай", "Карманов", 35));
         System.out.println(treeSet);
 
-        Collections.sort(treeSet, new WhoMoreFamous(3));
-        System.out.println(treeSet);
-        Collections.sort(treeSet, new WhoMoreFamous(2));
+        Comparator<Person> comparator = (Person o1, Person o2) -> {
+            String[] sur1 = o1.getSurname().split("\\P{IsAlphabetic}+");
+            String[] sur2 = o2.getSurname().split("\\P{IsAlphabetic}+");
+            int result = (sur1.length >= 2 && sur2.length >= 2) ? 0 : Integer.compare(sur1.length, sur2.length);
+            return result == 0 ? o1.compareTo(o2) : result;
+        };
+
+        Collections.sort(treeSet, comparator);
         System.out.println(treeSet);
     }
 }
